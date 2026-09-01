@@ -1,0 +1,23 @@
+name: Echoes
+category: pwn
+description: |
+  The Echoes terminal repeats whatever users type.
+  The developer was confident that nobody would type too much.
+  Can you make the terminal reveal something it was never supposed to?
+author: Club CTF Team
+type: container
+
+flags:
+  - CTF{echoes_are_not_always_safe}
+
+extra:
+  function: linear
+  initial: 100
+  decay: 5
+  minimum: 25
+
+hints:
+  - cost: 10
+    content: "The input function does not appear to care how long your message is."
+  - cost: 15
+    content: "Look at the stack variables around the input buffer."
