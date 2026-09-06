@@ -1,0 +1,24 @@
+name: Obelisk
+category: rev
+description: |
+  A sealed relic sits in the archive, waiting for the correct rite.
+  Everyone who's tried gdb on it has come back saying it just... knows.
+author: Club CTF Team
+type: static
+
+flags:
+  - CTF{v1rtual_m4chines_hide_n0thing_forever}
+
+extra:
+  function: linear
+  initial: 500
+  decay: 10
+  minimum: 150
+
+hints:
+  - cost: 25
+    content: "It notices debuggers. Figure out how before you go any further, or work statically."
+  - cost: 40
+    content: "The interpreter's disassembly won't tell you anything. The real program is data, not code — find where it's fed in and decode the instruction format."
+  - cost: 60
+    content: "You don't need to satisfy the check to get the flag. The thing it's comparing against at the very end is also the key to decrypting the flag. Find that one constant."

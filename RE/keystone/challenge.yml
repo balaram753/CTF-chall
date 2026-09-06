@@ -1,0 +1,22 @@
+name: Keystone
+category: rev
+description: |
+  Somebody's selling "cracked" builds of a tool that still checks for a license.
+  We got our hands on the binary. Find out what it's hiding.
+author: Club CTF Team
+type: static
+
+flags:
+  - CTF{x0r_whispers_the_truth}
+
+extra:
+  function: linear
+  initial: 100
+  decay: 5
+  minimum: 25
+
+hints:
+  - cost: 10
+    content: "strings won't help you here — whatever it's checking against isn't stored in plaintext."
+  - cost: 15
+    content: "Find the comparison loop. Every byte of your input gets transformed the same simple way before it's compared."

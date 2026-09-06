@@ -1,0 +1,26 @@
+name: Ziggurat
+category: rev
+description: |
+  They dug it out of the same archive as the obelisk. Same builder, more paranoid.
+  The last team that cracked the obelisk grabbed a single constant and walked off
+  with the flag. This one doesn't leave a constant lying around. Nothing here
+  decrypts until you make it run.
+author: Club CTF Team
+type: static
+
+flags:
+  - CTF{each_lay3r_c0nceals_the_next_one_below}
+
+extra:
+  function: linear
+  initial: 600
+  decay: 8
+  minimum: 150
+
+hints:
+  - cost: 30
+    content: "The bytecode array is ciphertext. Every byte is xored with a rolling key that updates from the plaintext it just produced, seeded by a constant in the binary. There are no jumps, so replay the fetch order and the real program falls out."
+  - cost: 50
+    content: "The recovered program is a tiny VM: it loads six 32-bit words from your 24-character input, then runs a few rounds of add-constant / cross-lane xor / multiply-by-odd / rotate, and compares each word to a target. The lanes are mixed together and multiplied, so you can't solve one byte at a time. Lift the operations and feed the whole system to z3."
+  - cost: 70
+    content: "The flag is not xored against any constant in the file. Its key is derived from the serial itself: two FNV-1a-64 passes over your 24 bytes seed an xorshift128 keystream. Recover the exact serial with the solver first, then reproduce that keystream to decrypt the flag."

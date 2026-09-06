@@ -1,0 +1,13 @@
+services:
+  vault:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PWN_PORT:-5001}:6000"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 64m
+    cpus: "0.50"

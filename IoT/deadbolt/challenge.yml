@@ -1,0 +1,60 @@
+name: Deadbolt
+author: Club CTF Team
+category: iot
+description: |
+  The DB-2000 was bolted to a door nobody at the facility will talk about. The last
+  technician sent to service it filed no report; his badge still pings the reader
+  every night at 3:07 a.m. from the inside.
+
+  We cut the lock out of the wall and dumped its flash. It is still powered, still on
+  the network, still politely refusing every code we feed it. Marketing calls the
+  admin console "cryptographically sealed." Marketing has never met you.
+
+  Nothing you need is written on the flash. The flash only tells you how the lock
+  talks. Whatever it is guarding, the answer only comes out of the door that is still
+  breathing on the other end of the wire.
+
+# ---- Scoring ---------------------------------------------------------------
+# "dynamic" here = dynamic SCORING (points fall as more teams solve). This is the
+# native CTFd feature and it is NOT the same as a per-team flag. See the FLAG note
+# below.
+type: dynamic
+value: 750
+extra:
+  initial: 750       # points at 0 solves
+  minimum: 200        # floor it decays to
+  decay: 20           # linear: number of solves at which value reaches `minimum`
+  function: linear
+
+# ---- Connection ------------------------------------------------------------
+# CTFd shows this string verbatim; replace with your real host/port before import.
+connection_info: "nc lock.your-ctf.example 5002"
+
+# ---- Flag ------------------------------------------------------------------
+# ONE shared static flag. It must equal the FLAG you inject in src/compose.yaml.
+# CTFd compares every submission against this string, so it is the same for all
+# teams. A truly per-team flag is NOT possible with a plain static flag; it needs a
+# per-team container plugin (see "Per-team flags" in solution/README.md).
+flags:
+  - CTF{deadbolt_l3ngth_3xtension_ala_carte}
+
+# ---- Handout ---------------------------------------------------------------
+# ctfcli uploads these to the challenge. Players get ONLY the flash image.
+files:
+  - handout/deadbolt-flash.bin
+
+tags:
+  - iot
+  - crypto
+  - hash-length-extension
+
+state: hidden
+version: "0.1"
+
+hints:
+  - cost: 30
+    content: "It's a flash dump. Carve it (binwalk / unsquashfs) and pull the controller out of the root filesystem. The wire protocol isn't plaintext: find the framing (a 2-byte magic, a length, and a payload run through a tiny keystream) inside the binary."
+  - cost: 60
+    content: "On connect the lock sends you a token it signed for you. Look at how it signs: sig = SHA256(secret || message). The command handler trusts any message whose signature verifies, and the field parser lets a later key=value override an earlier one. You are never meant to learn the secret."
+  - cost: 90
+    content: "Hash length extension. Take the signed guest token and extend the message with &role=admin&cmd=dump, forging a valid signature without the key. You don't know the secret's length, so brute it (roughly 12-40 bytes) live against the device's fresh nonce until the vault opens."
