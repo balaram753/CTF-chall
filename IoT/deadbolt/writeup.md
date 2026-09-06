@@ -1,53 +1,96 @@
-# Deadbolt — command walkthrough
+# Deadbolt — command reference (for the end-of-event walkthrough)
 
-Follow these in order. Replace `HOST` and `PORT` with the ones on the challenge page.
-`solve.py` is the exploit script provided with this sheet.
+These are the commands used to analyse and attack the lock. The last stage is
+automated by a small exploit tool (kept by the instructor). Everything up to it,
+students can run themselves.
 
-## 1. Carve the firmware
+## 1. Carve the firmware out of the flash dump
 
 ```sh
-binwalk deadbolt-flash.bin                 # spot the SquashFS at offset 0x1000
-binwalk -e deadbolt-flash.bin              # extract it
-cd _deadbolt-flash.bin.extracted/squashfs-root
-find . -type f                             # list the recovered filesystem
+binwalk deadbolt-flash.bin
 ```
-
-## 2. Look around the device
+Shows a SquashFS filesystem at offset `0x1000`.
 
 ```sh
-cat etc/deadbolt.conf                       # device config (note: "key fused in silicon")
+binwalk -e deadbolt-flash.bin
+cd _deadbolt-flash.bin.extracted/squashfs-root
+find . -type f
+```
+Extracts and lists the device's root filesystem.
+
+## 2. Read the device files
+
+```sh
+cat etc/deadbolt.conf
 cat etc/banner
-cat etc/init.d/rcS                          # shows /usr/bin/lockd runs at boot
-file usr/bin/lockd                          # stripped 64-bit ELF controller
+cat etc/init.d/rcS
+```
+`rcS` shows `/usr/bin/lockd` starts at boot. `deadbolt.conf` says the signing key is
+"fused in silicon, not stored here" — so there is no key to find on the flash.
+
+## 3. Inspect the controller binary
+
+```sh
+file usr/bin/lockd
 strings usr/bin/lockd | grep -iE 'sig=|role=|salt=|vault|urandom|DEVICE_KEY'
 ```
-
-## 3. Run the controller locally (optional, to practice)
-
-```sh
-./usr/bin/lockd &                           # prints: lockd listening on 6000
-python3 solve.py 127.0.0.1 6000             # local run -> placeholder flag
-kill %1                                      # stop the local controller
-```
-
-Local run returns the practice flag, not the scored one:
-
+The strings reveal the whole protocol and the bug:
 ```text
-[+] secret length = 16
-[+] flag: CTF{local_dev_instance_not_the_real_flag}
+salt=%s&uid=1000&role=guest      <- the token the lock signs for you
+%s&sig=%s                         <- message, then its signature
+&sig=                             <- how a signed command is framed
+ok=1&vault=%s                     <- the reply that contains the flag
 ```
+The signature is `SHA256(secret + message)` — a secret-prefixed hash. That is the
+vulnerable construction.
 
-## 4. Attack the live device (this gives the real flag)
+## 4. Confirm the wire is not plain text
 
 ```sh
-python3 solve.py HOST PORT
+nc HOST PORT
+```
+You get binary garbage, not readable text. The protocol is framed (`0xDB 0x01`, a
+length, then the payload) and the payload is XOR-masked with a small keystream. This
+is why you cannot just type commands with `nc` — it has to be scripted.
+
+## 5. The attack — hash length extension
+
+The lock signs a guest token with `SHA256(secret + msg)` and then trusts any message
+whose signature checks out, with "last field wins" parsing. That lets you take the
+signed guest token and append `&role=admin&cmd=dump` while forging a valid signature,
+**without knowing the secret**. The classic tool that does the hash math is HashPump:
+
+```sh
+# one-time install (either one)
+pip install hashpumpy           # Python module 'hashpumpy'
+# or build https://github.com/bwall/HashPump for the `hashpump` command
 ```
 
+```sh
+# demonstrates the forgery: given the token and its signature, append the admin fields
+hashpump -s <sig_hex> -d 'salt=<nonce>&uid=1000&role=guest' -k <secret_len> -a '&role=admin&cmd=dump'
+```
+It prints a new signature and the new message (with the padding "glue" bytes). The
+secret length is unknown, so you try each length until the device accepts it.
+
+The exploit tool automates three things HashPump does not: undoing the wire mask,
+wrapping the forged message back into a frame, and looping the length brute over a
+live connection. Run it against the challenge to get the flag:
+
+```sh
+./exploit HOST PORT
+```
 ```text
 [+] secret length = 21
-[+] flag: CTF{...the real flag...}
+[+] flag: CTF{...}
 ```
 
-Notes:
-- `nc HOST PORT` by hand will not work — the protocol is framed and masked, so use `solve.py`.
-- The secret length is different on every device, so the script brute-forces it. Just wait for the flag line.
+## Commands used, at a glance
+
+```text
+binwalk / binwalk -e     carve the firmware
+find / cat / file        explore the filesystem and config
+strings | grep           read the protocol and spot SHA256(secret+msg)
+nc                        show the protocol is framed/masked, not text
+hashpump                 forge the signature via hash length extension
+```
