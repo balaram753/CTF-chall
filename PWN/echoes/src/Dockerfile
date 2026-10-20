@@ -10,8 +10,10 @@ WORKDIR /app
 
 COPY echoes /app/echoes
 COPY flag.txt /app/flag.txt
+COPY session.sh /app/session.sh
 
 RUN chmod 0555 /app/echoes \
+    && chmod 0555 /app/session.sh \
     && chmod 0444 /app/flag.txt \
     && chown root:root /app/echoes /app/flag.txt
 
@@ -19,4 +21,4 @@ USER 10001
 
 EXPOSE 5000
 
-CMD ["socat", "TCP-LISTEN:5000,reuseaddr,fork", "EXEC:/app/echoes,stderr"]
+CMD ["socat", "TCP-LISTEN:5000,reuseaddr,fork", "EXEC:/app/session.sh,stderr"]

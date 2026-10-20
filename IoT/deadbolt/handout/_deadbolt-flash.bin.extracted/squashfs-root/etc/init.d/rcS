@@ -1,3 +1,0 @@
-#!/bin/sh
-# bring up the lock controller at boot
-/usr/bin/lockd &
