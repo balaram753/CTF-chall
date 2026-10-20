@@ -2,15 +2,15 @@
 
 **Vuln:** hash length extension against a `SHA256(secret ‖ message)` token MAC, reached through a proprietary wire framing, with the flag held only on the live device.
 
-**Fallback flag:** `CTF{deadbolt_l3ngth_3xtension_ala_carte}` (real events use one shared static flag per the notes at the end; a genuinely per-team flag needs a container plugin).
+**Fallback flag:** `DNCTF{deadbolt_l3ngth_3xtension_ala_carte}` (real events use one shared static flag per the notes at the end; a genuinely per-team flag needs a container plugin).
 
 ---
 
 ## 0. Why this resists "paste the handout into an AI"
 
-The flag is not on the flash, not in the binary, and not derivable from either. `strings` on the carved `lockd` shows exactly two `CTF{...}`-shaped things and neither is the answer:
+The flag is not on the flash, not in the binary, and not derivable from either. `strings` on the carved `lockd` shows exactly two `DNCTF{...}`-shaped things and neither is the answer:
 
-- `CTF{local_dev_instance_not_the_real_flag}` — the placeholder printed only when the binary runs with no `FLAG` in its environment (i.e. when a player runs it on their own machine).
+- `DNCTF{local_dev_instance_not_the_real_flag}` — the placeholder printed only when the binary runs with no `FLAG` in its environment (i.e. when a player runs it on their own machine).
 - `d3adb0lt.dev.key` — the development signing key, used only by that same stand-alone instance.
 
 The scored flag lives only in the live device's `FLAG` environment variable and only comes out after a correct, interactive attack against a per-connection nonce. Hand the file to a model and, at best, it explains the bug and hands back the placeholder. That is the honest bar: you cannot make a static file un-solvable by a capable agent, so the flag was moved off the file and behind a live interaction.
@@ -176,14 +176,14 @@ Local output (secret length 16 = the dev key):
 
 ```text
 [+] secret length = 16
-[+] flag: CTF{local_dev_instance_not_the_real_flag}
+[+] flag: DNCTF{local_dev_instance_not_the_real_flag}
 ```
 
 Live output (secret length is randomized per container, so it varies):
 
 ```text
 [+] secret length = 21
-[+] flag: CTF{deadbolt_l3ngth_3xtension_ala_carte}
+[+] flag: DNCTF{deadbolt_l3ngth_3xtension_ala_carte}
 ```
 
 ### Against the Docker container
@@ -209,7 +209,7 @@ Use a real MAC. `HMAC-SHA256(secret, msg)` is not length-extendable, because the
 
 `challenge.yml` uses `type: dynamic`, which is dynamic **scoring** (points decay with solves), not a per-team flag. The flag there is one shared static string and must equal the `FLAG` you inject in `src/compose.yaml`.
 
-A genuinely different flag per team is **not** possible with a static flag list — CTFd compares every submission against the same string(s). For that you need a per-team container plugin (e.g. ctfd-whale) that spawns one `lockd` per team, injects that team's `FLAG`, and registers it. For a club event, the shared static flag is the sane choice; the handout contains no flag regardless, so the AI-paste concern is already handled. Do **not** use a regex flag like `CTF\{.*\}` to accept "any" flag — that lets teams submit `CTF{anything}`.
+A genuinely different flag per team is **not** possible with a static flag list — CTFd compares every submission against the same string(s). For that you need a per-team container plugin (e.g. ctfd-whale) that spawns one `lockd` per team, injects that team's `FLAG`, and registers it. For a club event, the shared static flag is the sane choice; the handout contains no flag regardless, so the AI-paste concern is already handled. Do **not** use a regex flag like `DNCTF\{.*\}` to accept "any" flag — that lets teams submit `DNCTF{anything}`.
 
 The entrypoint randomizes `DEVICE_KEY` (length 12–36) per container so the online length-brute stays part of the solve. Don't set `DEVICE_KEY` yourself.
 

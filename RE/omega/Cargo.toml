@@ -1,0 +1,24 @@
+[package]
+name = "omega"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+name = "omega_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "omega"
+path = "src/bin/omega.rs"
+
+[[bin]]
+name = "omega-oracle"
+path = "src/bin/oracle.rs"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
+

@@ -1,6 +1,6 @@
 # Ziggurat — solution
 
-**Flag:** `CTF{each_lay3r_c0nceals_the_next_one_below}`
+**Flag:** `DNCTF{each_lay3r_c0nceals_the_next_one_below}`
 **Serial:** `Zigg7St3pped//Rite//x!23`
 
 This is the intended path. `solve.py` performs all of it from nothing but three

@@ -9,7 +9,7 @@ author: Club CTF Team
 type: static
 
 flags:
-  - CTF{each_lay3r_c0nceals_the_next_one_below}
+  - DNCTF{each_lay3r_c0nceals_the_next_one_below}
 
 extra:
   function: linear

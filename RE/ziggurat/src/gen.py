@@ -21,7 +21,7 @@ SERIAL = b"Zigg7St3pped//Rite//x!23"
 assert len(SERIAL) == 24, len(SERIAL)
 assert all(0x21 <= c <= 0x7e for c in SERIAL), "serial must be printable"
 
-FLAG = b"CTF{each_lay3r_c0nceals_the_next_one_below}"
+FLAG = b"DNCTF{each_lay3r_c0nceals_the_next_one_below}"
 
 ODD = 0x9E3779B1  # odd -> invertible under mul mod 2^32
 ROUNDS = 4

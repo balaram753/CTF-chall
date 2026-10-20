@@ -8,7 +8,7 @@ services:
     environment:
       # Per-team flag injected by the platform. DEVICE_KEY is randomized in the
       # entrypoint; do not set it here.
-      FLAG: "${FLAG:-CTF{deadbolt_l3ngth_3xtension_ala_carte}}"
+      FLAG: "${FLAG:-DNCTF{deadbolt_l3ngth_3xtension_ala_carte}}"
     read_only: true
     security_opt:
       - no-new-privileges:true

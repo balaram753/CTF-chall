@@ -13,5 +13,5 @@ USER lock
 EXPOSE 6000
 # FLAG is injected per team at spawn. DEVICE_KEY is randomized per container so
 # the secret length must be brute-forced online against each instance.
-ENV FLAG="CTF{replace_me_per_team}"
+ENV FLAG="DNCTF{replace_me_per_team}"
 CMD ["/usr/bin/entrypoint.sh"]

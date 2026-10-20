@@ -2,4 +2,4 @@ name: Vault
 category: PWN
 difficulty: medium
 points: 200
-flag: CTF{vault_arithmetic_can_break_trust}
+flag: DNCTF{vault_arithmetic_can_break_trust}

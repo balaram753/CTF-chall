@@ -7,7 +7,7 @@ author: Club CTF Team
 type: static
 
 flags:
-  - CTF{v1rtual_m4chines_hide_n0thing_forever}
+  - DNCTF{v1rtual_m4chines_hide_n0thing_forever}
 
 extra:
   function: linear

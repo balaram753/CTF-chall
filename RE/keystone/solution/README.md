@@ -77,13 +77,13 @@ $ echo 'N30N-D4WN-88' | ./keystone
 This build is unlicensed. Enter your activation code to continue.
 > Activation accepted.
 
-CTF{x0r_whispers_the_truth}
+DNCTF{x0r_whispers_the_truth}
 ```
 
 ## 5. Flag
 
 ```text
-CTF{x0r_whispers_the_truth}
+DNCTF{x0r_whispers_the_truth}
 ```
 
 ## 6. Why this matters

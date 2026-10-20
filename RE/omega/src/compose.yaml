@@ -1,0 +1,16 @@
+services:
+  omega:
+    build: .
+    ports:
+      - "${OMEGA_PORT:-7000}:7000"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 64m
+    cpus: "0.50"
+    environment:
+      OMEGA_MASTER_SEED: "replace-at-deploy-time"
+      OMEGA_SERIAL: "replace-with-organizer-serial-32-bytes"
+      OMEGA_FLAG: "replace-at-deploy-time"

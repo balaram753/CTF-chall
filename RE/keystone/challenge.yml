@@ -7,7 +7,7 @@ author: Club CTF Team
 type: static
 
 flags:
-  - CTF{x0r_whispers_the_truth}
+  - DNCTF{x0r_whispers_the_truth}
 
 extra:
   function: linear

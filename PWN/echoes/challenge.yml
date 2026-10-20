@@ -8,7 +8,7 @@ author: Club CTF Team
 type: container
 
 flags:
-  - CTF{echoes_are_not_always_safe}
+  - DNCTF{echoes_are_not_always_safe}
 
 extra:
   function: linear

@@ -36,7 +36,7 @@ connection_info: "nc lock.your-ctf.example 5002"
 # teams. A truly per-team flag is NOT possible with a plain static flag; it needs a
 # per-team container plugin (see "Per-team flags" in solution/README.md).
 flags:
-  - CTF{deadbolt_l3ngth_3xtension_ala_carte}
+  - DNCTF{deadbolt_l3ngth_3xtension_ala_carte}
 
 # ---- Handout ---------------------------------------------------------------
 # ctfcli uploads these to the challenge. Players get ONLY the flash image.

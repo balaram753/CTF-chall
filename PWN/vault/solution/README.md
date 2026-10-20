@@ -81,13 +81,13 @@ p.interactive()
 $ printf 'player\n0\n' | ./vault
 
 [+] Vault opened!
-[+] Flag: CTF{vault_arithmetic_can_break_trust}
+[+] Flag: DNCTF{vault_arithmetic_can_break_trust}
 ```
 
 ## 5. Flag
 
 ```text
-CTF{vault_arithmetic_can_break_trust}
+DNCTF{vault_arithmetic_can_break_trust}
 ```
 
 ## 6. Why this matters

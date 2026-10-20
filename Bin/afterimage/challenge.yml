@@ -1,0 +1,6 @@
+name: Afterimage
+category: PWN
+difficulty: god
+points: 1000
+dynamic_flag: true
+flag_format: DNCTF{afterimage_<32 lowercase hex characters>}

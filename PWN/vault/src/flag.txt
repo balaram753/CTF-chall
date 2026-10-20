@@ -1,1 +1,1 @@
-CTF{vault_arithmetic_can_break_trust}
+DNCTF{vault_arithmetic_can_break_trust}

@@ -1,0 +1,19 @@
+name: omega
+category: reverse engineering
+description: >-
+  Reconstruct the runtime-generated validator behind a server-assisted Linux
+  x86-64 client. Recover the 32-byte serial and submit it through the protocol.
+  The service returns the flag only for a complete, independently verified solve.
+value: 500
+difficulty: expert
+architecture: x86_64
+connection_info: 'tcp://HOST:7000'
+files:
+  - handout/omega
+flags:
+  type: static
+  case_sensitive: true
+hints:
+  - "Treat the capsule as a structured message, not an opaque token."
+  - "The runtime tape is masked, shuffled, and interpreted; recover one instruction at a time."
+  - "The four target lanes are not enough: the trace accumulator eliminates near-misses."

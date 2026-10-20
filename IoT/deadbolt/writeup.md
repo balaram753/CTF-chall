@@ -82,7 +82,7 @@ live connection. Run it against the challenge to get the flag:
 ```
 ```text
 [+] secret length = 21
-[+] flag: CTF{...}
+[+] flag: DNCTF{...}
 ```
 
 ## Commands used, at a glance

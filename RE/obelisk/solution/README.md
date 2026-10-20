@@ -132,7 +132,7 @@ OBELISK
 A sealed relic. It only responds to the correct rite.
 > The seal breaks.
 
-CTF{v1rtual_m4chines_hide_n0thing_forever}
+DNCTF{v1rtual_m4chines_hide_n0thing_forever}
 ```
 
 Both routes land on the same flag, since the decrypt key is the fixed target constant, not the serial itself.
@@ -140,7 +140,7 @@ Both routes land on the same flag, since the decrypt key is the fixed target con
 ## 5. Flag
 
 ```text
-CTF{v1rtual_m4chines_hide_n0thing_forever}
+DNCTF{v1rtual_m4chines_hide_n0thing_forever}
 ```
 
 ## 6. Why this matters

@@ -223,7 +223,7 @@ static void handle(int fd){
 
         if(strcmp(c2,"dump")==0){
             const char *flag=getenv("FLAG");
-            if(!flag||!*flag) flag="CTF{local_dev_instance_not_the_real_flag}";
+            if(!flag||!*flag) flag="DNCTF{local_dev_instance_not_the_real_flag}";
             char out[512];
             snprintf(out,sizeof out,"ok=1&vault=%s",flag);
             send_text(fd,out);
